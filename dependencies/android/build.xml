@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Extension_Facebook" default="help">
+<project name="facebook" default="help">
 	
 	<property environment="env"/>
 	<property name="sdk.dir" value="${env.ANDROID_SDK}"/>

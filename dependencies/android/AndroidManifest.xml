@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.haxe.extension.extension_facebook" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.haxe.extension.facebook" >
 	
+	<uses-permission android:name="android.permission.INTERNET" />
 	
+	<application android:label="::APP_TITLE::" >
+		
+		<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+		
+		<activity 	android:name="com.facebook.FacebookActivity"
+					android:configChanges = "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+					android:theme="@android:style/Theme.Translucent.NoTitleBar"
+					android:label="::APP_TITLE::" />
+		
+	</application>
 	
 </manifest>

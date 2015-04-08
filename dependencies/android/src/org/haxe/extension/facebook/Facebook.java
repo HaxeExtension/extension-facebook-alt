@@ -1,15 +1,20 @@
 package org.haxe.extension.facebook;
 
 
-import android.app.Activity;
-import android.content.res.AssetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.haxe.extension.Extension;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 
 /* 
@@ -41,42 +46,35 @@ import org.haxe.extension.Extension;
 public class Facebook extends Extension {
 	
 	
-	public static int sampleMethod (int inputValue) {
-		
-		return inputValue * 100;
-		
+	public static Facebook instance;
+	
+	CallbackManager mCallbackManager;
+	
+	static List<String> breakParamString(String params){
+		return Arrays.asList(params.split(","));
 	}
 	
-	
-	/**
-	 * Called when an activity you launched exits, giving you the requestCode 
-	 * you started it with, the resultCode it returned, and any additional data 
-	 * from it.
-	 */
-	public boolean onActivityResult (int requestCode, int resultCode, Intent data) {
-		
-		return true;
-		
+	@Override
+	public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+		mCallbackManager.onActivityResult(requestCode, resultCode, data);
+		return super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
+	public CallbackManager getCallbackManager() {
+		return mCallbackManager;
+	}
 	
 	/**
 	 * Called when the activity is starting.
 	 */
 	public void onCreate (Bundle savedInstanceState) {
 		
+		super.onCreate(savedInstanceState);
 		
+		instance = this;
 		
-	}
-	
-	
-	/**
-	 * Perform any final cleanup before an activity is destroyed.
-	 */
-	public void onDestroy () {
-		
-		
-		
+		FacebookSdk.sdkInitialize(mainContext);
+		mCallbackManager = CallbackManager.Factory.create();
 	}
 	
 	
@@ -86,18 +84,7 @@ public class Facebook extends Extension {
 	 */
 	public void onPause () {
 		
-		
-		
-	}
-	
-	
-	/**
-	 * Called after {@link #onStop} when the current activity is being 
-	 * re-displayed to the user (the user has navigated back to it).
-	 */
-	public void onRestart () {
-		
-		
+		AppEventsLogger.deactivateApp(mainContext);
 		
 	}
 	
@@ -108,32 +95,8 @@ public class Facebook extends Extension {
 	 */
 	public void onResume () {
 		
-		
-		
-	}
-	
-	
-	/**
-	 * Called after {@link #onCreate} &mdash; or after {@link #onRestart} when  
-	 * the activity had been stopped, but is now again being displayed to the 
-	 * user.
-	 */
-	public void onStart () {
-		
-		
+		AppEventsLogger.activateApp(mainContext);
 		
 	}
-	
-	
-	/**
-	 * Called when the activity is no longer visible to the user, because 
-	 * another activity has been resumed and is covering this one. 
-	 */
-	public void onStop () {
-		
-		
-		
-	}
-	
 	
 }
