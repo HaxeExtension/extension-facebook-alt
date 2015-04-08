@@ -1,0 +1,13 @@
+{
+  "name": "facebook",
+  "url": "",
+  "license": "MIT",
+  "tags": [],
+  "description": "OpenFL facebook extension",
+  "version": "1.0.0",
+  "releasenote": "",
+  "contributors": ["tbaudon"],
+  "dependencies": {
+
+  }
+}

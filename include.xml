@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<section if="ios">
+		<ndll name="facebook" />
+	</section>
+	
+	<!-- Use the following for an Android Java extension, not needed otherwise -->
+	
+	<dependency name="facebook" path="dependencies/android" if="android" />
+	<android extension="org.haxe.extension.facebook.Facebook"/>
+	
+</project>
