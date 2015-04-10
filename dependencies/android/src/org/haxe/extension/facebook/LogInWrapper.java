@@ -28,9 +28,6 @@ public class LogInWrapper {
 					
 				@Override
 				public void onSuccess(LoginResult result) {
-					
-					AccessToken token = result.getAccessToken();
-					
 					mHaxeLogInManager.call0("loginSuccess");
 				}
 				

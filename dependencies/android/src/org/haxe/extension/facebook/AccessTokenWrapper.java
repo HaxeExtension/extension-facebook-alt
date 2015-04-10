@@ -1,16 +1,33 @@
 package org.haxe.extension.facebook;
 
+import java.util.Set;
+
 import com.facebook.AccessToken;
 
 public class AccessTokenWrapper {
 
-	public static AccessToken getCurrentToken() {
-		try {
-			return AccessToken.getCurrentAccessToken();
-		}catch (Exception e){
-			Facebook.trace("erreur : " + e.getMessage());
+	public static String getPermissions(AccessToken token){
+		
+		String rep = "";
+		
+		Set<String> perms = token.getPermissions();
+		for(String perm : perms){
+			rep += perm + ",";
 		}
-		return null;
+		
+		return rep;
+	}
+	
+	public static String getDeclinedPermissions(AccessToken token){
+		
+		String rep = "";
+		
+		Set<String> perms = token.getDeclinedPermissions();
+		for(String perm : perms){
+			rep += perm + ",";
+		}
+		
+		return rep;
 	}
 	
 }

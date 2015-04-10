@@ -1,4 +1,5 @@
 package extension.facebook;
+import msignal.Signal;
 
 #if (android && openfl)
 import openfl.utils.JNI;
@@ -21,15 +22,20 @@ class LoginManager
 	
 	/////////////////////
 	
-	public var onLoginSuccess 	: Void -> Void;
-	public var onLoginFailed 	: String -> Void;
-	public var onLoginCanceled	: Void -> Void;
-	public var onLoggedOut 		: Void -> Void;
+	public var OnLoginSuccess 	: Signal0;
+	public var OnLoginFailed 		: Signal1<String>;
+	public var OnLoginCanceled	: Signal0;
+	public var OnLoggedOut 		: Signal0;
 	
 	/////////////////////
 	
 	function new() 
 	{
+		OnLoginSuccess = new Signal0();
+		OnLoginFailed = new Signal1<String>();
+		OnLoginCanceled = new Signal0();
+		OnLoggedOut = new Signal0();
+		
 		#if android
 		jni_init(this);
 		#end
@@ -58,8 +64,7 @@ class LoginManager
 		jni_logOut();
 		#end
 		
-		if (onLoggedOut != null)
-			onLoggedOut();
+		OnLoggedOut.dispatch();
 	}
 	
 	public function isLoggedIn() : Bool {
@@ -68,18 +73,15 @@ class LoginManager
 	}
 	
 	function loginSuccess() {
-		if (onLoginSuccess != null)
-			onLoginSuccess;
+		OnLoginSuccess.dispatch();
 	}
 	
 	function loginError(e : String) {
-		if (onLoginFailed != null)
-			onLoginFailed(e);
+		OnLoginFailed.dispatch(e);
 	}
 	
 	function loginCanceled() {
-		if (onLoginCanceled != null)
-			onLoginCanceled();
+		OnLoginCanceled.dispatch();
 	}
 	
 	#if android
