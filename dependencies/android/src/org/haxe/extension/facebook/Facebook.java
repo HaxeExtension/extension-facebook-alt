@@ -1,20 +1,25 @@
 package org.haxe.extension.facebook;
 
 
-import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
 import org.haxe.extension.Extension;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 
 /* 
@@ -54,6 +59,10 @@ public class Facebook extends Extension {
 		return Arrays.asList(params.split(","));
 	}
 	
+	static void trace(String message){
+		Log.i("trace","extension-facebook : " + message);
+	}
+	
 	@Override
 	public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
 		mCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -75,6 +84,25 @@ public class Facebook extends Extension {
 		
 		FacebookSdk.sdkInitialize(mainContext);
 		mCallbackManager = CallbackManager.Factory.create();
+		
+		
+		PackageInfo info;
+		try {
+			info = mainActivity.getPackageManager().getPackageInfo(
+					"::APP_PACKAGE::",
+					PackageManager.GET_SIGNATURES);
+			
+			for (Signature signature : info.signatures){
+				MessageDigest md = MessageDigest.getInstance("SHA");
+				md.update(signature.toByteArray());
+				trace("keyHash " + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+			}
+			
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

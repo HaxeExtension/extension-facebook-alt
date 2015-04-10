@@ -1,12 +1,15 @@
 package org.haxe.extension.facebook;
 
+import org.haxe.lime.HaxeObject;
+
+import android.util.Log;
+
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
-import org.haxe.lime.HaxeObject;
 
 public class LogInWrapper {
 	
@@ -25,6 +28,9 @@ public class LogInWrapper {
 					
 				@Override
 				public void onSuccess(LoginResult result) {
+					
+					AccessToken token = result.getAccessToken();
+					
 					mHaxeLogInManager.call0("loginSuccess");
 				}
 				
@@ -40,13 +46,25 @@ public class LogInWrapper {
 			}
 		);
 	}
+	
+	public static void logOut() {
+		mLoginManager.logOut();
+	}
 
 	public static void logInWithReadPermissions(String permissions){
-		mLoginManager.logInWithReadPermissions(Facebook.mainActivity, Facebook.breakParamString(permissions));
+		try {
+			mLoginManager.logInWithReadPermissions(Facebook.mainActivity, Facebook.breakParamString(permissions));
+		}catch (Exception e){
+			Facebook.trace(e.getMessage());
+		}
 	}
 	
 	public static void logInWithPublishPermissions(String permissions){
-		mLoginManager.logInWithPublishPermissions(Facebook.mainActivity, Facebook.breakParamString(permissions));
+		try {
+			mLoginManager.logInWithPublishPermissions(Facebook.mainActivity, Facebook.breakParamString(permissions));
+		}catch (Exception e){
+			Facebook.trace(e.getMessage());
+		}
 	}
 	
 }

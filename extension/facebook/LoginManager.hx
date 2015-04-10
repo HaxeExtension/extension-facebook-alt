@@ -19,13 +19,14 @@ class LoginManager
 		return mInstance;
 	}
 	
-	////////////////////
+	/////////////////////
 	
 	public var onLoginSuccess 	: Void -> Void;
 	public var onLoginFailed 	: String -> Void;
 	public var onLoginCanceled	: Void -> Void;
+	public var onLoggedOut 		: Void -> Void;
 	
-	////////////////////
+	/////////////////////
 	
 	function new() 
 	{
@@ -41,6 +42,29 @@ class LoginManager
 		#if android
 		jni_logInWithReadPermissions(paramString);
 		#end
+	}
+	
+	public function logInWithPublishPermissions(permissions : Array<String>) {
+		var paramString = permissions.toString();
+		paramString = paramString.substr(1, paramString.length - 2);
+		
+		#if android
+		jni_logInWithPublishPermissions(paramString);
+		#end
+	}
+	
+	public function logOut() {
+		#if android
+		jni_logOut();
+		#end
+		
+		if (onLoggedOut != null)
+			onLoggedOut();
+	}
+	
+	public function isLoggedIn() : Bool {
+		var accessToken : AccessToken = AccessToken.getCurrent();
+		return !accessToken.isExpired();
 	}
 	
 	function loginSuccess() {
@@ -62,6 +86,7 @@ class LoginManager
 	static var jni_logInWithReadPermissions : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logInWithReadPermissions", "(Ljava/lang/String;)V");
 	static var jni_logInWithPublishPermissions : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logInWithPublishPermissions", "(Ljava/lang/String;)V");
 	static var jni_init : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "init", "(Lorg/haxe/lime/HaxeObject;)V");
+	static var jni_logOut : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logOut" , "()V");
 	#end
 	
 }
