@@ -1,6 +1,7 @@
 package org.haxe.extension.facebook;
 
 import java.util.Set;
+import java.lang.String;
 
 import com.facebook.AccessToken;
 
@@ -30,4 +31,5 @@ public class AccessTokenWrapper {
 		return rep;
 	}
 	
+
 }

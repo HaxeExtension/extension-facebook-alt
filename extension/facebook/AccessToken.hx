@@ -25,9 +25,9 @@ class AccessToken
 			return mCurrentToken;
 		else
 			return new AccessToken(null);
-		#else
-		return null;
 		#end
+		
+		return null;
 	}
 	
 	var mToken : Dynamic;
@@ -44,9 +44,8 @@ class AccessToken
 		
 		#if android
 		return JNI.callMember(jni_isExpired, mToken, []);
-		#else
-		return true;
 		#end
+		return true;
 	}
 	
 	public function getPermissions() : Array<String>{
@@ -57,9 +56,9 @@ class AccessToken
 		#if android
 		var permissions : String = jni_getPermissions(mToken);
 		return permissions.split(",");
-		#else
-		return [];
 		#end
+		
+		return [];
 	}
 	
 	public function getDeclinedPermissions() : Array<String>{
@@ -69,9 +68,9 @@ class AccessToken
 		#if android
 		var permissions : String = jni_getPermissions(mToken);
 		return permissions.split(",");
-		#else
-		return [];
 		#end
+		
+		return [];
 	}
 	
 	public function hasPermissions(permissions : Array<String>) : Bool {
@@ -84,21 +83,36 @@ class AccessToken
 	}
 	
 	public function getUserId() : String {
+		
+		if (mToken == null) return null;
+		
 		#if android
-		return jni_getUserId();
-		#else
-		return null;
+		return JNI.callMember(jni_getUserId, mToken, []);
 		#end
+		
+		return null;
+	}
+	
+	public function getToken() : String {
+		if (mToken == null) return null;
+		
+		#if android
+		return JNI.callMember(jni_getToken, mToken, []);
+		#end
+		
+		return null;
 	}
 	
 	#if android
 	static var jni_getCurrentToken : Dynamic = JNI.createStaticMethod("com.facebook.AccessToken", "getCurrentAccessToken", "()Lcom/facebook/AccessToken;");
-	static var jni_getUserId : Dynamic = JNI.createStaticMethod("com.facebook.AccessToken", "getUserId", "()Ljava/lang/String;");
 	
 	static var jni_getPermissions : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.AccessTokenWrapper", "getPermissions", "(Lcom/facebook/AccessToken;)Ljava/lang/String;");
 	static var jni_getDeclinedPermissions : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.AccessTokenWrapper", "getDeclinedPermissions", "(Lcom/facebook/AccessToken;)Ljava/lang/String;");
 	
 	static var jni_isExpired : Dynamic =  JNI.createMemberMethod("com.facebook.AccessToken", "isExpired", "()Z");
+	static var jni_getUserId : Dynamic = JNI.createMemberMethod("com.facebook.AccessToken", "getUserId", "()Ljava/lang/String;");
+	static var jni_getToken : Dynamic = JNI.createMemberMethod("com.facebook.AccessToken", "getToken", "()Ljava/lang/String;");
+	
 	#end
 	
 }

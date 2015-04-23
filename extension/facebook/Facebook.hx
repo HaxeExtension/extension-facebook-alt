@@ -13,8 +13,7 @@ import openfl.utils.JNI;
 
 class Facebook {
 		
-	public static function login(permissions : Array<String>) {
-			
-	}
+	public static inline var API : String = "2.3";
+	public static inline var GRAPH : String = "graph.facebook.com";
 	
 }

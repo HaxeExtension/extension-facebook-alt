@@ -23,7 +23,7 @@ class LoginManager
 	/////////////////////
 	
 	public var OnLoginSuccess 	: Signal0;
-	public var OnLoginFailed 		: Signal1<String>;
+	public var OnLoginFailed 	: Signal1<String>;
 	public var OnLoginCanceled	: Signal0;
 	public var OnLoggedOut 		: Signal0;
 	

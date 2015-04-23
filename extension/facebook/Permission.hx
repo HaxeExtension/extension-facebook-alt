@@ -7,6 +7,9 @@ package extension.facebook;
 class Permission
 {
 	
+	public static inline var PUBLISH_ACTION : String = "publish_actions";
+	public static inline var PUBLIC_PROFILE : String = "public_profile";
+	
 	public static function askWrite(permissions : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
 		var logManager = prepareLogIn(permissions, onAccepted, onRefused, onError);
 		logManager.logInWithPublishPermissions(permissions);
