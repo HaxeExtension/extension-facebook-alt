@@ -11,6 +11,7 @@ import openfl.events.IOErrorEvent;
 import openfl.events.NetStatusEvent;
 import openfl.net.URLRequestHeader;
 import openfl.net.URLRequestMethod;
+import openfl.net.URLVariables;
 
 /**
  * ...
@@ -21,6 +22,7 @@ class Request
 	
 	var mUrl : String;
 	var mUrlRequest : URLRequest;
+	var mUrlVariables : URLVariables;
 	
 	var mUrlLoader : URLLoader;
 	var mImageLoader : Loader;
@@ -31,14 +33,21 @@ class Request
 	
 	var mRequestSucces : Bool;
 
-	public function new(endPoint : String, parameters : Dynamic = null) 
+	public function new(endPoint : String, parameters : Dynamic = null, httpMethod : String = "GET") 
 	{
 		mUrl = "https://" + Facebook.GRAPH + "/v" + Facebook.API + "/" + endPoint;
-		mUrl += "?access_token=" + AccessToken.getCurrent().getToken();
 		
-		if (parameters != null)
-			for (field in Reflect.fields(parameters)) 
-				mUrl += "&" + field + "=" + Reflect.field(parameters, field);
+		if (parameters == null)
+			parameters = { };
+			
+		mUrlRequest = new URLRequest(mUrl);
+		mUrlRequest.method = httpMethod;
+		
+		mUrlVariables = new URLVariables();
+		mUrlVariables.access_token = AccessToken.getCurrent().getToken();
+		
+		for (field in Reflect.fields(parameters)) 
+			Reflect.setField(mUrlVariables,field, Reflect.field(parameters, field));
 		
 		mUrlLoader = new URLLoader();
 		mUrlLoader.addEventListener(Event.COMPLETE, onRequestComplete);
@@ -64,7 +73,8 @@ class Request
 			message : e.text
 		};
 		
-		mOnErrorCallback(a);
+		if(mOnErrorCallback != null)
+			mOnErrorCallback(a);
 	}
 	
 	private function onRequestComplete(e:Event):Void 
@@ -76,11 +86,13 @@ class Request
 				
 			if (Reflect.hasField(data, "error")) {
 				var error : FacebookError = Reflect.field(data, "error");
-				mOnErrorCallback(error);
-			}else 
+				if(mOnErrorCallback != null)
+					mOnErrorCallback(error);
+			}else if(mOnLoadedCallback != null)
 				mOnLoadedCallback(data);
 		}catch (e : Dynamic) {
-			mOnLoadedCallback(answerData);
+			if(mOnLoadedCallback != null)
+				mOnLoadedCallback(answerData);
 		}
 		
 	}
@@ -91,27 +103,25 @@ class Request
 		mOnImageLoadedCallback(bitmapData);
 	}
 	
-	public function get(onLoaded : Dynamic -> Void, onError : FacebookError -> Void) {
-		var loadedUrl = mUrl;
-		loadedUrl += "&redirect=false";
-		
-		mUrlRequest = new URLRequest(loadedUrl);
-		mUrlRequest.method = URLRequestMethod.GET;
+	public function load(onLoaded : Dynamic -> Void = null, onError : FacebookError -> Void = null) {
+		mUrlVariables.redirect = false;
+		mUrlRequest.data = mUrlVariables;
 		
 		mOnLoadedCallback = onLoaded;
 		mOnErrorCallback = onError;
+		
 		mUrlLoader.load(mUrlRequest);
 	}
 	
-	public function getImage(onLoaded : BitmapData -> Void, onError : FacebookError -> Void) {
-		var loadedUrl = mUrl;
-		loadedUrl += "&redirect=true&loaderhack=.jpg";
+	public function loadImage(onLoaded : BitmapData -> Void = null, onError : FacebookError -> Void = null) {
+		mUrlVariables.redirect = true;
 		
-		mUrlRequest = new URLRequest(loadedUrl);
-		mUrlRequest.method = URLRequestMethod.GET;
+		mUrlRequest.url = mUrl + "?loaderhack=.jpg";
+		mUrlRequest.data = mUrlVariables;
 		
 		mOnImageLoadedCallback = onLoaded;
 		mOnErrorCallback = onError;
+		
 		mImageLoader.load(mUrlRequest);
 	}
 	

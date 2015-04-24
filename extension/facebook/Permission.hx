@@ -21,6 +21,22 @@ class Permission
 		logManager.logInWithReadPermissions(permissions);
 	}
 	
+	public static function doWithRead(permission : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
+		var token = AccessToken.getCurrent();
+		if (token.hasPermissions(permission))
+			onAccepted();
+		else
+			askRead(permission, onAccepted, onRefused, onError);
+	}
+	
+	public static function doWithWrite(permission : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
+		var token = AccessToken.getCurrent();
+		if (token.hasPermissions(permission))
+			onAccepted();
+		else
+			askWrite(permission, onAccepted, onRefused, onError);
+	}
+	
 	static var mAskedPerms : Array<String>;
 	
 	static var mAcceptedCB : Dynamic;
