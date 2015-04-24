@@ -10,14 +10,33 @@ class Permission
 	public static inline var PUBLISH_ACTION : String = "publish_actions";
 	public static inline var PUBLIC_PROFILE : String = "public_profile";
 	
+	public static var dontAskRefusedPermissionAgain : Bool;
+	
+	static var mRefusedPermissions : Array<String>;
+	static var mAskedPerms : Array<String>;
+	static var mAcceptedCB : Dynamic;
+	static var mRefusedCB : Dynamic;
+	static var mErrorCB : Dynamic;
+	
 	public static function askWrite(permissions : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
 		var logManager = prepareLogIn(permissions, onAccepted, onRefused, onError);
+		
+		if(dontAskRefusedPermissionAgain)
+			for(askedPerm in permissions)
+				if (mRefusedPermissions.indexOf(askedPerm) != -1)
+					return;
+				
 		logManager.logInWithPublishPermissions(permissions);
 	}
 	
-	
 	public static function askRead(permissions : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
 		var logManager = prepareLogIn(permissions, onAccepted, onRefused, onError);
+		
+		if(dontAskRefusedPermissionAgain)
+			for(askedPerm in permissions)
+				if (mRefusedPermissions.indexOf(askedPerm) != -1)
+					return;
+		
 		logManager.logInWithReadPermissions(permissions);
 	}
 	
@@ -36,12 +55,6 @@ class Permission
 		else
 			askWrite(permission, onAccepted, onRefused, onError);
 	}
-	
-	static var mAskedPerms : Array<String>;
-	
-	static var mAcceptedCB : Dynamic;
-	static var mRefusedCB : Dynamic;
-	static var mErrorCB : Dynamic;
 	
 	static function prepareLogIn(perms : Array<String>, onAccepted : Dynamic = null, onRefused : Dynamic = null, onError : Dynamic = null) {
 		var logManager = LoginManager.getInstance();
@@ -77,14 +90,19 @@ class Permission
 		if (token.hasPermissions(mAskedPerms))
 			if (mAcceptedCB != null)
 				mAcceptedCB();
-		else if (mRefusedCB != null)
+		else if (mRefusedCB != null){
 			mRefusedCB();
+			updateRefusedPermissions();
+		}
 		reset();
 	}
 	
 	static function onLoginCanceled() {
 		if (mRefusedCB != null)
 			mRefusedCB();
+			
+		updateRefusedPermissions();
+		
 		reset();
 	}
 	
@@ -92,6 +110,17 @@ class Permission
 		if (mErrorCB != null)
 			mErrorCB();
 		reset();
+	}
+	
+	static function updateRefusedPermissions():Void 
+	{
+		if (mRefusedPermissions == null)
+			mRefusedPermissions = new Array<String>();
+		
+		for (perm in mAskedPerms)
+			if (AccessToken.getCurrent().getPermissions().indexOf(perm) == -1 &&
+				mRefusedPermissions.indexOf(perm) == -1)
+				mRefusedPermissions.push(perm);
 	}
 	
 }
