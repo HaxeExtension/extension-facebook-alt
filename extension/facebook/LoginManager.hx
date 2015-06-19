@@ -69,6 +69,7 @@ class LoginManager
 	
 	public function isLoggedIn() : Bool {
 		var accessToken : AccessToken = AccessToken.getCurrent();
+		if (accessToken == null) return false;
 		return !accessToken.isExpired();
 	}
 	

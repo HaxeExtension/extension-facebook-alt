@@ -32,10 +32,14 @@ class Request
 	var mOnErrorCallback : FacebookError -> Void;
 	
 	var mRequestSucces : Bool;
+	
+	var mImageRequestCache : Map<String, BitmapData>;
 
 	public function new(endPoint : String, parameters : Dynamic = null, httpMethod : String = "GET") 
 	{
 		mUrl = "https://" + Facebook.GRAPH + "/v" + Facebook.API + "/" + endPoint;
+		
+		mImageRequestCache = new Map<String, BitmapData>();
 		
 		if (parameters == null)
 			parameters = { };
@@ -44,7 +48,9 @@ class Request
 		mUrlRequest.method = httpMethod;
 		
 		mUrlVariables = new URLVariables();
-		mUrlVariables.access_token = AccessToken.getCurrent().getToken();
+		var token = AccessToken.getCurrent();
+		if(token != null)
+			mUrlVariables.access_token = token.getToken();
 		
 		for (field in Reflect.fields(parameters)) 
 			Reflect.setField(mUrlVariables,field, Reflect.field(parameters, field));
@@ -60,13 +66,11 @@ class Request
 		mImageLoader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatus);
 	}
 	
-	private function onHttpStatus(e:HTTPStatusEvent):Void 
-	{
+	function onHttpStatus(e:HTTPStatusEvent) {
 		trace(e.status);
 	}
 	
-	private function onRequestError(e:IOErrorEvent):Void 
-	{
+	function onRequestError(e:IOErrorEvent) {
 		var a : FacebookError = {
 			code : e.errorID,
 			type : "IOError",
@@ -77,8 +81,7 @@ class Request
 			mOnErrorCallback(a);
 	}
 	
-	private function onRequestComplete(e:Event):Void 
-	{
+	function onRequestComplete(e:Event){
 		var answerData : String = mUrlLoader.data;
 		
 		try {
@@ -97,15 +100,22 @@ class Request
 		
 	}
 	
-	private function onImageLoaded(e:Event):Void {
-		trace("image loaded");
+	function onImageLoaded(e:Event) {
 		var bitmapData : BitmapData = cast(mImageLoader.content, Bitmap).bitmapData;
+		mImageRequestCache[mUrlRequest.url] = bitmapData;
 		mOnImageLoadedCallback(bitmapData);
+	}
+	
+	public function setToken(token : String ) {
+		mUrlVariables.access_token = token;
 	}
 	
 	public function load(onLoaded : Dynamic -> Void = null, onError : FacebookError -> Void = null) {
 		mUrlVariables.redirect = false;
 		mUrlRequest.data = mUrlVariables;
+		
+		if (mUrlRequest.method == URLRequestMethod.GET)
+			mUrlRequest.url = mUrl + "?" + mUrlVariables;
 		
 		mOnLoadedCallback = onLoaded;
 		mOnErrorCallback = onError;
@@ -116,13 +126,19 @@ class Request
 	public function loadImage(onLoaded : BitmapData -> Void = null, onError : FacebookError -> Void = null) {
 		mUrlVariables.redirect = true;
 		
-		mUrlRequest.url = mUrl + "?loaderhack=.jpg";
 		mUrlRequest.data = mUrlVariables;
 		
-		mOnImageLoadedCallback = onLoaded;
-		mOnErrorCallback = onError;
-		
-		mImageLoader.load(mUrlRequest);
+		if (mUrlRequest.method == URLRequestMethod.GET)
+			mUrlRequest.url = mUrl + "?" + mUrlVariables + "&loaderhack=.jpg";
+			
+		if (mImageRequestCache[mUrlRequest.url] != null) {
+			if (onLoaded != null)
+				onLoaded(mImageRequestCache[mUrlRequest.url]);
+		}else{
+			mOnImageLoadedCallback = onLoaded;
+			mOnErrorCallback = onError;
+			mImageLoader.load(mUrlRequest);
+		}
 	}
 	
 }

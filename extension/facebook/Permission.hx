@@ -9,6 +9,7 @@ class Permission
 	
 	public static inline var PUBLISH_ACTION : String = "publish_actions";
 	public static inline var PUBLIC_PROFILE : String = "public_profile";
+	public static inline var USER_FRIENDS : String = "user_friends";
 	
 	public static var dontAskRefusedPermissionAgain : Bool;
 	

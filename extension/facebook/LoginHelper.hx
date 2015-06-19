@@ -9,17 +9,17 @@ class LoginHelper
 	
 	var mLoginManager : LoginManager;
 	
-	public var onLoggedIn : Void -> Void;
-	public var onLoggedOut : Void -> Void;
-	public var onLogInError : String -> Void;
-	public var onLogInCanceled : Void -> Void; 
+	public var onLoggedInCB : Void -> Void;
+	public var onLoggedOutCB : Void -> Void;
+	public var onLogInErrorCB : String -> Void;
+	public var onLogInCanceledCB : Void -> Void; 
 
 	public function new(onLoggedIn : Void -> Void = null, onLoggedOut : Void -> Void = null, onLogInError : String -> Void = null, onLogInCanceled : Void -> Void = null)
 	{
-		this.onLoggedIn = onLoggedIn;
-		this.onLoggedOut = onLoggedOut;
-		this.onLogInError = onLogInError;
-		this.onLogInCanceled = onLogInCanceled;
+		onLoggedInCB = onLoggedIn;
+		onLoggedOutCB = onLoggedOut;
+		onLogInErrorCB = onLogInError;
+		onLogInCanceledCB = onLogInCanceled;
 		
 		mLoginManager = LoginManager.getInstance();
 	}
@@ -28,8 +28,10 @@ class LoginHelper
 		checkLogInStatus();
 	}
 	
-	public function logIn() {
-		var	perms = [Permission.PUBLIC_PROFILE];
+	public function logIn(additionalsPermissions : Array<String> = null) {
+		var	perms : Array<String> = [Permission.PUBLIC_PROFILE];
+		if (additionalsPermissions != null)
+			perms.concat(additionalsPermissions);
 		mLoginManager.logInWithReadPermissions(perms);
 	}
 	
@@ -46,9 +48,8 @@ class LoginHelper
 	}
 	
 	function onLogInSuccess() {
-		
-		if (onLoggedIn != null)
-			onLoggedIn();
+		if (onLoggedInCB != null)
+			onLoggedInCB();
 			
 		mLoginManager.OnLoginSuccess.remove(onLogInSuccess);
 		mLoginManager.OnLoginFailed.remove(onLogInFail);
@@ -58,18 +59,18 @@ class LoginHelper
 	}
 	
 	function onLogInFail(e : String) {
-		if (onLogInError != null)
-			onLogInError(e);
+		if (onLogInErrorCB != null)
+			onLogInErrorCB(e);
 	}
 	
 	function onLogInCancel() {
-		if (onLogInCanceled != null)
-			onLogInCanceled();
+		if (onLogInCanceledCB != null)
+			onLogInCanceledCB();
 	}
 	
 	function onLogOut() {
-		if (onLoggedOut != null)
-			onLoggedOut();
+		if (onLoggedOutCB != null)
+			onLoggedOutCB();
 			
 		mLoginManager.OnLoggedOut.remove(onLogOut);
 		
@@ -78,5 +79,7 @@ class LoginHelper
 		mLoginManager.OnLoginCanceled.add(onLogInCancel);
 	}
 	
-	
+	public function isLoggedIn() {
+		return mLoginManager.isLoggedIn();
+	}
 }

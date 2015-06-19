@@ -15,7 +15,7 @@ public class AccessTokenWrapper {
 		for(String perm : perms){
 			rep += perm + ",";
 		}
-		
+
 		return rep;
 	}
 	
