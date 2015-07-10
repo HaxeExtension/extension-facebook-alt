@@ -34,7 +34,7 @@ Now you are ready to use the extension in your application.
 ### Facebook Login
 
 ```haxe
-// Wrote the sample in github edit mode, errors may appear...
+// Wrote the samples in github edit mode, errors may appear...
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import extension.facebook.LoginHelper;
@@ -92,5 +92,63 @@ class FacebookLoginDemo extends Sprite {
 
 }
 
+
+```
+
+### A Graph Request 
+
+```haxe
+  import extension.facebook.Request;
+
+  function getUserName() {
+    var params = {
+      fields : "id,name"
+    }
+    
+    var request : Request = new Request("me", params);
+    request.load(onRequestSuccess, onRequestFail);
+  }
+  
+  function onRequestSuccess(data : Dynamic){
+    trace("Your name is : " + data.name);
+  }
+  
+  function onRequestFail(error : String){
+    trace("Request fail : "  + error);
+  }
+```
+
+### Permissions
+
+```haxe
+  import extension.facebook.Request;
+  import extension.facebook.Permission;
+  
+  function askPermission(){
+    // try to read user friend list. If we don't have the permission, we ask for it, then perform the request
+    Permission.doWithRead([Permission.USER_FRIENDS ], onAccept, onRefused, onError);
+    // use doWithWrite if you want some write permissions
+  }
+  
+  function onAccept(){
+    var request = new Request("me/friends");
+    request.load(onSuccess, onRequestError);
+  }
+  
+  function onSuccess(data : Dynamic){
+    trace(data);
+  }
+  
+  function onRequesterror(e : String){
+    trace("error : " + e);
+  }
+  
+  function onRefused(){
+    trace("Please accept the permission so we can ask gift to your friends :'(");
+  }
+  
+  function onError(){
+    trace("Shit happens");
+  }
 
 ```
