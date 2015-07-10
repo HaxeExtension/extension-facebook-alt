@@ -97,6 +97,8 @@ class FacebookLoginDemo extends Sprite {
 
 ### A Graph Request 
 
+Use this tool to test graph request : https://developers.facebook.com/tools/explorer/
+
 ```haxe
   import extension.facebook.Request;
 
