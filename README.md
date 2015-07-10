@@ -1,6 +1,9 @@
 # extension-Facebook
 OpenFL extension to use Facebook in your app
 
+Only available for android at the moment.
+ios to come.
+
 ## Instalation
 
 clone this repo, then use the command below :
@@ -12,6 +15,11 @@ haxelib dev facebook path/to/clone
 Install the msignal lib as well :
 ```shell
 haxelib install msignal
+```
+
+then build the extension :
+```shell
+lime build facebook android
 ```
 
 ## Use
