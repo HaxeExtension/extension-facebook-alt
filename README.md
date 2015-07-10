@@ -36,8 +36,9 @@ Now you are ready to use the extension in your application.
 ```haxe
 // Wrote the sample in github edit mode, errors may appear...
 import openfl.display.Sprite;
-import extension.facebook.LoginHelper;
 import openfl.events.MouseEvent;
+import extension.facebook.LoginHelper;
+import extension.facebook.AccessToken;
 
 class FacebookLoginDemo extends Sprite {
 
