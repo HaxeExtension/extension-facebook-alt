@@ -19,7 +19,7 @@ haxelib install msignal
 
 then build the extension :
 ```shell
-lime build facebook android
+lime rebuild facebook android
 ```
 
 ## Use
