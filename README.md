@@ -24,7 +24,7 @@ lime rebuild facebook android
 
 ## Use
 
-**/!\ There is probably a better way to do the following instruction : **
+**/!\ There is probably a better way to do the following instruction :**
 Facebook java api requires at least java 1.7 to build.
 In the ```C:\Development\Android SDK\tools\ant\build.xml``` file, replace the lines
 ```xml
@@ -36,7 +36,7 @@ by
     <property name="java.target" value="1.7" />
     <property name="java.source" value="1.7" />
 ```
-** Please tell me if you know a better way to tell android to build with java 1.7 version **
+**Please tell me if you know a better way to tell android to build with java 1.7 version**
 
 Add a setenv tag in you project.xml to set your facebook application ID :
 ```xml
