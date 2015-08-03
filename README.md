@@ -1,8 +1,8 @@
 # extension-Facebook
 OpenFL extension to use Facebook in your app
 
-Only available for android at the moment.
-ios to come.
+Only available for Android at the moment.
+iOS to come.
 
 ## Instalation
 
@@ -37,6 +37,9 @@ by
     <property name="java.target" value="1.7" />
     <property name="java.source" value="1.7" />
 ```
+
+You may need to update your Java JDK http://www.oracle.com/technetwork/java/javase/downloads/index.html and use "openfl setup android" to set the path to the new JDK.
+
 **Please tell me if you know a better way to tell android to build with java 1.7 version**
 
 Add a setenv tag in you project.xml to set your facebook application ID :
@@ -71,7 +74,7 @@ class FacebookLoginDemo extends Sprite {
   function new(){
     super();
     
-    mHelper = new FacebookLoginHelper(onLoggedIn, onLoggedOut, onLogginError, onLoginCancel);
+    mHelper = new LoginHelper(onLoggedIn, onLoggedOut, onLogginError, onLoginCancel);
     mHelper.init(); // this check if the user was loggedIn before, and trigger onLoggedIn if it was the case.
     
     var btnLogIn = new Sprite();
@@ -89,11 +92,11 @@ class FacebookLoginDemo extends Sprite {
   }
   
   function onLoginClicked(e : MouseEvent) {
-    mHelper.login();
+    mHelper.logIn();
   }
   
   function onLogOutClicked(e : MouseEvent) {
-    mHelper.logout();
+    mHelper.logOut();
   }
   
   function onLoggedIn(){
