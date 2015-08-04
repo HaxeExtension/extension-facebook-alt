@@ -141,8 +141,8 @@ Use this tool to test graph request : https://developers.facebook.com/tools/expl
     trace("Your name is : " + data.name);
   }
   
-  function onRequestFail(error : String){
-    trace("Request fail : "  + error);
+  function onRequestFail(e : FacebookError){
+    trace("Request fail : "  + e);
   }
 ```
 
