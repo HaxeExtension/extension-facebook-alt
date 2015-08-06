@@ -13,7 +13,7 @@ class AppInviteDialog {
 	/**
 	 * Open App Invite Dialog
 	 *
-	 * @param	appLinkUrl			App Link for what should be opened when the recipient clicks on the install/play button on the app invite page.
+	 * @param	appLinkUrl		App Link for what should be opened when the recipient clicks on the install/play button on the app invite page.
 	 * @param	previewImageUrl		URL to an image to be used in the invite.
 	 */
 	public function new(appLinkUrl : String, previewImageUrl : String = "")	{
