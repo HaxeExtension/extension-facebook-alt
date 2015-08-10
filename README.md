@@ -6,10 +6,15 @@ iOS to come.
 
 ## Instalation
 
-clone this repo, then use the command below :
+Clone this repo, then use the command below :
 
 ```shell
 haxelib dev facebook path/to/clone
+```
+
+Or, you can simply use
+```shell
+haxelib install facebook
 ```
 
 Install the msignal lib as well :
