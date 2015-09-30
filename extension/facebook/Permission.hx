@@ -24,7 +24,7 @@ class Permission
 		
 		if(dontAskRefusedPermissionAgain)
 			for(askedPerm in permissions)
-				if (mRefusedPermissions.indexOf(askedPerm) != -1)
+				if (mRefusedPermissions != null && mRefusedPermissions.indexOf(askedPerm) != -1)
 					return;
 				
 		logManager.logInWithPublishPermissions(permissions);
@@ -35,7 +35,7 @@ class Permission
 		
 		if(dontAskRefusedPermissionAgain)
 			for(askedPerm in permissions)
-				if (mRefusedPermissions.indexOf(askedPerm) != -1)
+				if (mRefusedPermissions != null && mRefusedPermissions.indexOf(askedPerm) != -1)
 					return;
 		
 		logManager.logInWithReadPermissions(permissions);
