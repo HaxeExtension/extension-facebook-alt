@@ -2,12 +2,9 @@
 	
 	<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
 	
-	<files id="common">
-		
+	<files id="iphone">
 		<compilerflag value="-Iinclude"/>
-		
-		<file name="common/ExternalInterface.cpp"/>
-		<file name="common/extension-Facebook.cpp"/>
+		<compilerflag value="-F../dependencies/ios/" />
 		
 	</files>
 	
@@ -21,7 +18,10 @@
 		
 		<outdir name="../ndll/${BINDIR}"/>
 		<ext value=".ndll" if="windows || mac || linux"/>
-		<files id="common"/>
+		
+		<section if="iphone" >
+            <files id="iphone" if="iphone" />
+        </section>
 		
 	</target>
 	
