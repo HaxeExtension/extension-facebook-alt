@@ -1,0 +1,3 @@
+-cp .
+-main Run.hx
+-neko ../run.n

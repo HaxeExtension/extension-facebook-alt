@@ -5,6 +5,7 @@
 	
 	<section if="ios">
 		<ndll name="facebook" />
+        <!--<dependency path="dependencies/ios/FBSDKCoreKit.framework" />-->
 	</section>
 	
 	<!-- Use the following for an Android Java extension, not needed otherwise -->
