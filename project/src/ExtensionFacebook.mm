@@ -1,50 +1,21 @@
 #include "ExtensionFacebook.h"
 
-#include <hx/CFFI.h>
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
-@interface ExtensionFacebook : NSObject
-+ (ExtensionFacebook *)intances;
-@end
-
-@interface NMEAppDelegate : NSObject <UIApplicationDelegate>
-@end
-
-@implementation ExtensionFacebook
--(id)init {
-    self = [super init];
-    return self;
-}
-@end
-
-@implementation NMEAppDelegate (ExtensionFacebook)
-
--(id)init {
-    self = [super init];
-    NSLog(@"init delegate");
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationDidLaunchWithOptions:) name:UIApplicationDidFinishLaunchingNotification object:nil];
-    return self;
-}
-
-- (BOOL)application         : (UIApplication *) application
-        openURL             : (NSURL *)url
-        sourceApplication   : (NSString *)sourceApplication
-        annotation          : (id)annotation
-{
-    NSLog(@"openUrl");
-    return true;
-}
-
--(void)onApplicationDidLaunchWithOptions:(NSNotification *)notification {
-    NSLog(@"Finish launching with options");
-}
-
-@end
-
-
-
 namespace facebookExt {
+    
+    static void init(value haxeInstance){
+        mLoginWrapper = [[LoginWrapper alloc] init];
+    }
+    DEFINE_PRIM(init, 1);
+    
+    static void loginWithReadPermissions(value permissions){
+        const char* perms = val_string(permissions);
+        
+        NSString* str = [[NSString alloc] initWithUTF8String:perms];
+        NSArray* arr = [str componentsSeparatedByString:@","];
+        
+        [mLoginWrapper loginWithReadPermission: arr];
+    }
+    DEFINE_PRIM(loginWithReadPermissions, 1);
     
 }
 

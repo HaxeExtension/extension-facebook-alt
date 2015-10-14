@@ -5,6 +5,10 @@ import msignal.Signal;
 import openfl.utils.JNI;
 #end
 
+#if cpp
+import cpp.Lib;
+#end
+
 /**
  * ...
  * @author Thomas B
@@ -38,6 +42,8 @@ class LoginManager
 		
 		#if android
 		jni_init(this);
+		#elseif ios
+		objC_init(this);
 		#end
 	}
 	
@@ -47,6 +53,8 @@ class LoginManager
 		
 		#if android
 		jni_logInWithReadPermissions(paramString);
+		#elseif ios
+		objC_logInWithReadPermissions(paramString);
 		#end
 	}
 	
@@ -90,6 +98,9 @@ class LoginManager
 	static var jni_logInWithPublishPermissions : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logInWithPublishPermissions", "(Ljava/lang/String;)V");
 	static var jni_init : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "init", "(Lorg/haxe/lime/HaxeObject;)V");
 	static var jni_logOut : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logOut" , "()V");
+	#elseif ios
+	static var objC_logInWithReadPermissions : Dynamic = Lib.load("facebookExt", "loginWithReadPermissions", 1);
+	static var objC_init : Dynamic = Lib.load("facebookExt", "init", 1);
 	#end
 	
 }

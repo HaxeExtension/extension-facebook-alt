@@ -92,7 +92,11 @@ class Run {
 							"<key>FacebookAppID</key>" + 
 							"<string>::fbid::</string>" +
 							"<key>FacebookDisplayName</key>" +
-							"<string>::appname::</string>";
+							"<string>::appname::</string>" + 
+							"<key>LSApplicationQueriesSchemes</key>" +
+							"<array>" +
+							"<string>fbauth2</string>" +
+							"</array>";
 							
 		var params = { fbid : appID, appname : appDisplayName };
 		var tpl = new Template(facebookChild);
