@@ -43,7 +43,7 @@ class LoginManager
 		#if android
 		jni_init(this);
 		#elseif ios
-		objC_init(this);
+		objC_init(loginSuccess, loginError, loginCanceled);
 		#end
 	}
 	
@@ -100,7 +100,7 @@ class LoginManager
 	static var jni_logOut : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logOut" , "()V");
 	#elseif ios
 	static var objC_logInWithReadPermissions : Dynamic = Lib.load("facebookExt", "loginWithReadPermissions", 1);
-	static var objC_init : Dynamic = Lib.load("facebookExt", "init", 1);
+	static var objC_init : Dynamic = Lib.load("facebookExt", "initLogin", 3);
 	#end
 	
 }

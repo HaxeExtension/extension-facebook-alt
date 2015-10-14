@@ -1,4 +1,7 @@
 #include "LoginWrapper.h"
+#include "ExtensionFacebook.h"
+
+#include <hx/CFFI.h>
 
 @implementation LoginWrapper
 
@@ -20,14 +23,15 @@
                 fromViewController: mViewController
                 handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
                     if (error) {
-                        NSLog(@"Process error");
+                        NSString * errorString = [error localizedDescription];
+                        const char * errorChar = [errorString UTF8String];
+                        val_call1(facebookExt::loginFailCb->get(), alloc_string(errorChar));
                     } else if (result.isCancelled) {
-                        NSLog(@"Cancelled");
+                        val_call0(facebookExt::loginCancelCb->get());
                     } else {
-                        NSLog(@"Logged in");
+                        val_call0(facebookExt::loginSuccessCb->get());
                     }
                 }];
-    NSLog(@"Yo");
 }
 
 @end

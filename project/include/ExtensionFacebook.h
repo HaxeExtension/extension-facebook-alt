@@ -15,9 +15,13 @@
 
 namespace facebookExt {
     
-    static LoginWrapper* mLoginWrapper;
+    LoginWrapper* mLoginWrapper;
     
-    static void init(value haxeInstance);
+    AutoGCRoot* loginSuccessCb = 0;
+    AutoGCRoot* loginFailCb = 0;
+    AutoGCRoot* loginCancelCb = 0;
+    
+    static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel);
     static void loginWithReadPermissions(value permissions);
     
 }

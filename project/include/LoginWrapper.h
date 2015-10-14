@@ -6,8 +6,8 @@
 
 @interface LoginWrapper : NSObject
 
-@property(assign) FBSDKLoginManager * mLoginManager;
-@property(assign) UIViewController * mViewController;
+@property(strong) FBSDKLoginManager * mLoginManager;
+@property(strong) UIViewController * mViewController;
 
 -(id)init;
 -(void)loginWithReadPermission:(NSArray *)permissions;

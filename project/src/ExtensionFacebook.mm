@@ -2,10 +2,19 @@
 
 namespace facebookExt {
     
-    static void init(value haxeInstance){
+    static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel){
+        if(onLoginSucess != NULL)
+            loginSuccessCb = new AutoGCRoot(onLoginSucess);
+        
+        if(onLoginFail != NULL)
+            loginFailCb = new AutoGCRoot(onLoginFail);
+        
+        if(onLoginCancel != NULL)
+            loginCancelCb = new AutoGCRoot(onLoginCancel);
+        
         mLoginWrapper = [[LoginWrapper alloc] init];
     }
-    DEFINE_PRIM(init, 1);
+    DEFINE_PRIM(initLogin, 3);
     
     static void loginWithReadPermissions(value permissions){
         const char* perms = val_string(permissions);
