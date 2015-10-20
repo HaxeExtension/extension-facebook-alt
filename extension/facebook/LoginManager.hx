@@ -64,12 +64,16 @@ class LoginManager
 		
 		#if android
 		jni_logInWithPublishPermissions(paramString);
+		#elseif ios
+		objC_logInWithPublishPermissions(paramString);
 		#end
 	}
 	
 	public function logOut() {
 		#if android
 		jni_logOut();
+		#elseif ios
+		objC_logOut();
 		#end
 		
 		OnLoggedOut.dispatch();
@@ -100,7 +104,9 @@ class LoginManager
 	static var jni_logOut : Dynamic = JNI.createStaticMethod("org.haxe.extension.facebook.LogInWrapper", "logOut" , "()V");
 	#elseif ios
 	static var objC_logInWithReadPermissions : Dynamic = Lib.load("facebookExt", "loginWithReadPermissions", 1);
+	static var objC_logInWithPublishPermissions : Dynamic = Lib.load("facebookExt", "loginWithPublishPermissions", 1);
 	static var objC_init : Dynamic = Lib.load("facebookExt", "initLogin", 3);
+	static var objC_logOut : Dynamic = Lib.load("facebookExt", "logOut", 0);
 	#end
 	
 }

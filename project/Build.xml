@@ -5,10 +5,10 @@
 	<files id="iphone">
 		<compilerflag value="-Iinclude"/>
 		<compilerflag value="-F../dependencies/ios/" />
-        
-		<file name="src/ExtensionFacebook.mm" />
-        <file name="src/NMEAppDelegate+ExtensionFacebook.mm" />
+		
         <file name="src/LoginWrapper.mm" />
+        <file name="src/NMEAppDelegate+ExtensionFacebook.mm" />
+		<file name="src/ExtensionFacebook.mm" />
 	</files>
 	
 	<set name="SLIBEXT" value=".lib" if="windows"/>
