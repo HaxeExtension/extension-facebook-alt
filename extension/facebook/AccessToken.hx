@@ -1,6 +1,10 @@
 package extension.facebook;
 import openfl.utils.JNI;
 
+#if cpp
+import cpp.Lib;
+#end
+
 /**
  * ...
  * @author Thomas B
@@ -15,8 +19,14 @@ class AccessToken
 		if (mCurrentToken == null)
 			mCurrentToken = new AccessToken(null);
 		
+		var token : Dynamic = null;
+			
 		#if android
-		var token = jni_getCurrentToken();
+		token = jni_getCurrentToken();
+		#elseif ios
+		token = objC_getCurrentToken();
+		#end
+		
 		if (token != null && token != mCurrentToken) {
 			mCurrentToken = token;
 			return new AccessToken(token);
@@ -25,7 +35,6 @@ class AccessToken
 			return mCurrentToken;
 		else
 			return new AccessToken(null);
-		#end
 		
 		return null;
 	}
@@ -44,7 +53,10 @@ class AccessToken
 		
 		#if android
 		return JNI.callMember(jni_isExpired, mToken, []);
+		#elseif ios
+		return objC_isExpired();
 		#end
+		
 		return true;
 	}
 	
@@ -88,6 +100,8 @@ class AccessToken
 		
 		#if android
 		return JNI.callMember(jni_getUserId, mToken, []);
+		#elseif ios
+		return objC_getUserId();
 		#end
 		
 		return null;
@@ -98,6 +112,8 @@ class AccessToken
 		
 		#if android
 		return JNI.callMember(jni_getToken, mToken, []);
+		#elseif ios
+		return mToken;
 		#end
 		
 		return null;
@@ -113,6 +129,10 @@ class AccessToken
 	static var jni_getUserId : Dynamic = JNI.createMemberMethod("com.facebook.AccessToken", "getUserId", "()Ljava/lang/String;");
 	static var jni_getToken : Dynamic = JNI.createMemberMethod("com.facebook.AccessToken", "getToken", "()Ljava/lang/String;");
 	
+	#elseif ios
+	static var objC_getCurrentToken : Dynamic = Lib.load("facebookExt", "getCurrentToken", 0);
+	static var objC_getUserId : Dynamic = Lib.load("facebookExt", "getUserId", 0);
+	static var objC_isExpired : Dynamic = Lib.load("facebookExt", "getIsExpired", 0);
 	#end
 	
 }
