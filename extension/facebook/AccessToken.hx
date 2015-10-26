@@ -12,7 +12,7 @@ import cpp.Lib;
 class AccessToken
 {
 	
-	static var mCurrentToken : Dynamic;
+	static var mCurrentToken : AccessToken;
 	
 	public static function getCurrent() : AccessToken {
 		
@@ -28,14 +28,16 @@ class AccessToken
 		#end
 		
 		if (token != null && token != mCurrentToken) {
-			mCurrentToken = token;
-			return new AccessToken(token);
+			mCurrentToken = new AccessToken(token);
+			return mCurrentToken;
 		}
-		else if (token == mCurrentToken)
+		else if (token == mCurrentToken.mToken) 
 			return mCurrentToken;
 		else
+		{
 			return new AccessToken(null);
-		
+		}
+			
 		return null;
 	}
 	
@@ -64,11 +66,17 @@ class AccessToken
 		
 		if (mToken == null)
 			return [];
+			
+		var permissions : String;
 		
 		#if android
-		var permissions : String = jni_getPermissions(mToken);
-		return permissions.split(",");
-		#end
+		permissions = jni_getPermissions(mToken);
+		#elseif ios
+        permissions = objC_getPermissions();
+        #end
+
+		if(permissions != null)
+			return permissions.split(",");
 		
 		return [];
 	}
@@ -76,12 +84,18 @@ class AccessToken
 	public function getDeclinedPermissions() : Array<String>{
 		if (mToken == null)
 			return [];
+			
+		var permissions : String;
 		
 		#if android
-		var permissions : String = jni_getPermissions(mToken);
-		return permissions.split(",");
+		permissions = jni_getDeclinedPermissions(mToken);
+		#elseif ios
+		permissions = objC_getDeclinedPermissions();
 		#end
 		
+		if (permissions != null)
+			return permissions.split(",");
+			
 		return [];
 	}
 	
@@ -133,6 +147,8 @@ class AccessToken
 	static var objC_getCurrentToken : Dynamic = Lib.load("facebookExt", "getCurrentToken", 0);
 	static var objC_getUserId : Dynamic = Lib.load("facebookExt", "getUserId", 0);
 	static var objC_isExpired : Dynamic = Lib.load("facebookExt", "getIsExpired", 0);
+	static var objC_getPermissions : Dynamic = Lib.load("facebookExt", "getPermissions", 0);
+	static var objC_getDeclinedPermissions : Dynamic = Lib.load("facebookExt", "getDeclinedPermissions", 0);
 	#end
 	
 }

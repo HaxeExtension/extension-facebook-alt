@@ -16,10 +16,14 @@ namespace facebookExt {
     static value getCurrentToken();
     static value getUserId();
     static value getIsExpired();
+    static value getPermissions();
+    static value getDeclinedPermissions();
     
     DEFINE_PRIM(getCurrentToken, 0);
     DEFINE_PRIM(getUserId, 0);
     DEFINE_PRIM(getIsExpired, 0);
+    DEFINE_PRIM(getPermissions, 0);
+    DEFINE_PRIM(getDeclinedPermissions, 0);
     
 }
 

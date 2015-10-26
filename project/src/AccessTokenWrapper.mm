@@ -50,4 +50,36 @@ namespace facebookExt {
             
     }
     
+    static value getPermissions() {
+        if(mAccessToken == NULL)
+            return alloc_string("");
+        else {
+            NSSet * permissions = [mAccessToken permissions];
+            NSMutableArray* perms = [[NSMutableArray alloc] init];
+            for(NSString* perm in permissions)
+                [perms addObject:perm];
+            
+            NSString* rep = [perms componentsJoinedByString:@","];
+            
+            const char * utfRep = [rep UTF8String];
+            return alloc_string(utfRep);
+        }
+    }
+    
+    static value getDeclinedPermissions() {
+        if(mAccessToken == NULL)
+            return alloc_string("");
+        else {
+            NSSet* declinedPermissions = [mAccessToken declinedPermissions];
+            NSMutableArray* declinedPerms = [[NSMutableArray alloc] init];
+            for(NSString* perm in declinedPermissions)
+                [declinedPerms addObject:perm];
+            
+            NSString * rep = [declinedPerms componentsJoinedByString:@","];
+            
+            const char * utfRep = [rep UTF8String];
+            return alloc_string(utfRep);
+        }
+    }
+    
 }
