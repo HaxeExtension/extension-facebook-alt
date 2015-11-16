@@ -21,7 +21,7 @@ haxelib install msignal
 
 then build the extension :
 ```shell
-lime rebuild facebook android
+lime rebuild facebook ios
 ```
 
 ## Use
