@@ -1,0 +1,1 @@
+keytool -exportcert -alias telaxo -keystore .\telaxoKey.keystore | openssl sha1 -binary | openssl base64
