@@ -67,7 +67,7 @@ class Request
 	}
 	
 	function onHttpStatus(e:HTTPStatusEvent) {
-		trace(e.status);
+		
 	}
 	
 	function onRequestError(e:IOErrorEvent) {
