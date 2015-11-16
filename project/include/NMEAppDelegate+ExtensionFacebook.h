@@ -1,9 +1,10 @@
-#ifndef NMEAppDelegate_ExtensionFacebook_h
-#define NMEAppDelegate_ExtensionFacebook_h
+#ifndef NME_APP_DELEGATE_EXTENSION_FACEBOOK_H
+#define NME_APP_DELEGATE_EXTENSION_FACEBOOK_H
 
 #import <UIKit/UIKit.h>
 
 @interface NMEAppDelegate : NSObject <UIApplicationDelegate>
+
 @end
 
 
@@ -11,8 +12,8 @@
 
 -(id)init;
 
--(void)onApplicationDidLaunchWithOptions:(NSNotification *)notification;
 -(void)onApplicationDidBecomeActive: (NSNotification *)notification;
+-(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 
 @end
 

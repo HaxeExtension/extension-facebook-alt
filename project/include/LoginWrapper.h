@@ -1,5 +1,5 @@
-#ifndef LoginWrapper_h
-#define LoginWrapper_h
+#ifndef LOGIN_WRAPPER_H
+#define LOGIN_WRAPPER_H
 
 #import <Foundation/Foundation.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
@@ -17,6 +17,7 @@ namespace facebookExt {
     AutoGCRoot* loginSuccessCb = 0;
     AutoGCRoot* loginFailCb = 0;
     AutoGCRoot* loginCancelCb = 0;
+    AutoGCRoot* ready = 0;
     
     static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel);
     static void loginWithReadPermissions(value permissions);

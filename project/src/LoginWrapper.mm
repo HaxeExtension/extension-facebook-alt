@@ -1,5 +1,6 @@
 #include "LoginWrapper.h"
 
+#import <FBSDKCoreKit/FBSDKAccessToken.h>
 // if I don't add those line , prim are not found!
 @implementation LoginWrapper : NSObject
 @end
@@ -7,6 +8,9 @@
 namespace facebookExt {
     
     static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel){
+        
+        FBSDKAccessToken * token = [FBSDKAccessToken currentAccessToken];
+        
         if(onLoginSucess != NULL)
             loginSuccessCb = new AutoGCRoot(onLoginSucess);
         
@@ -18,6 +22,8 @@ namespace facebookExt {
         
         mLoginManager = [[FBSDKLoginManager alloc] init];
         mViewController = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+        
+        FBSDKAccessToken * token2 = [FBSDKAccessToken currentAccessToken];
     }
     
     static void loginWithReadPermissions(value permissions){
@@ -32,11 +38,11 @@ namespace facebookExt {
                                             if (error) {
                                                 NSString * errorString = [error localizedDescription];
                                                 const char * errorChar = [errorString UTF8String];
-                                                val_call1(facebookExt::loginFailCb->get(), alloc_string(errorChar));
+                                                val_call1(loginFailCb->get(), alloc_string(errorChar));
                                             } else if (result.isCancelled) {
-                                                val_call0(facebookExt::loginCancelCb->get());
+                                                val_call0(loginCancelCb->get());
                                             } else {
-                                                val_call0(facebookExt::loginSuccessCb->get());
+                                                val_call0(loginSuccessCb->get());
                                             }
                                         }];
     }
@@ -53,11 +59,11 @@ namespace facebookExt {
                                                if (error) {
                                                    NSString * errorString = [error localizedDescription];
                                                    const char * errorChar = [errorString UTF8String];
-                                                   val_call1(facebookExt::loginFailCb->get(), alloc_string(errorChar));
+                                                   val_call1(loginFailCb->get(), alloc_string(errorChar));
                                                } else if (result.isCancelled) {
-                                                   val_call0(facebookExt::loginCancelCb->get());
+                                                   val_call0(loginCancelCb->get());
                                                } else {
-                                                   val_call0(facebookExt::loginSuccessCb->get());
+                                                   val_call0(loginSuccessCb->get());
                                                }
                                            }];
     }

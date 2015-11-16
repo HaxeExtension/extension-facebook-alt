@@ -56,7 +56,9 @@ class AccessToken
 		#if android
 		return JNI.callMember(jni_isExpired, mToken, []);
 		#elseif ios
-		return objC_isExpired();
+		var expired : Bool = objC_isExpired();
+		trace("Expired : " + expired);
+		return expired;
 		#end
 		
 		return true;

@@ -1,5 +1,5 @@
-#ifndef AccessTokenWrapper_h
-#define AccessTokenWrapper_h
+#ifndef ACCESS_TOKEN_WRAPPER_H
+#define ACCESS_TOKEN_WRAPPER_H
 
 #import <Foundation/Foundation.h>
 #import <FBSDKCoreKit/FBSDKAccessToken.h>

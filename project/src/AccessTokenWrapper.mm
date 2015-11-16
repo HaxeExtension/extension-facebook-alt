@@ -40,10 +40,10 @@ namespace facebookExt {
             NSComparisonResult result = [now compare:expireDate];
             
             if(result == NSOrderedAscending){
-                return alloc_bool(true);
+                return alloc_bool(false);
             }
             else{
-                return alloc_bool(false);
+                return alloc_bool(true);
             }
             
         }

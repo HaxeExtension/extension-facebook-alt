@@ -1,4 +1,5 @@
 package extension.facebook;
+import haxe.Timer;
 
 /**
  * ...
