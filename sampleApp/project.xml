@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="TestFacebook" package="com.sample.testfacebook" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="TestFacebook" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	<haxelib name="facebook"/>
+	
+	<setenv name="FACEBOOK_APP_ID" value="your_app_id" />
+	<setenv name="FACEBOOK_APP_DISPLAY_NAME" value="your_app_name" />
+	
+	<assets path="Assets" rename="assets" exclude="openfl.svg" />
+	<icon path="Assets/openfl.svg" />
+	
+</project>

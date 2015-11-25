@@ -60,6 +60,12 @@ You may need to update your Java JDK http://www.oracle.com/technetwork/java/java
 
 **Please tell me if you know a better way to tell android to build with java 1.7 version**
 
+##### Key Hashes
+
+Facebook asks for a key hashe when configuring your app for facebook.
+Your have to generate a keystore.
+Then use the bat in the sample folder to get your keyhase.
+
 #### iOs Specific step
 
 You need to add some informations in your project-info.plist to make facebook work with your ios app.
