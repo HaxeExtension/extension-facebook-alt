@@ -1,14 +1,14 @@
-#ifndef NME_APP_DELEGATE_EXTENSION_FACEBOOK_H
-#define NME_APP_DELEGATE_EXTENSION_FACEBOOK_H
+#ifndef SDL_APP_DELEGATE_EXTENSION_FACEBOOK_H
+#define SDL_APP_DELEGATE_EXTENSION_FACEBOOK_H
 
 #import <UIKit/UIKit.h>
 
-@interface NMEAppDelegate : NSObject <UIApplicationDelegate>
+@interface SDLUIKitDelegate : NSObject <UIApplicationDelegate>
 
 @end
 
 
-@interface NMEAppDelegate (ExtensionFacebook)
+@interface SDLUIKitDelegate (ExtensionFacebook)
 
 -(id)init;
 

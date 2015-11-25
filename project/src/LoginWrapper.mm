@@ -7,10 +7,7 @@
 
 namespace facebookExt {
     
-    static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel){
-        
-        FBSDKAccessToken * token = [FBSDKAccessToken currentAccessToken];
-        
+    static void initLogin(value onLoginSucess, value onLoginFail, value onLoginCancel){        
         if(onLoginSucess != NULL)
             loginSuccessCb = new AutoGCRoot(onLoginSucess);
         
@@ -21,9 +18,7 @@ namespace facebookExt {
             loginCancelCb = new AutoGCRoot(onLoginCancel);
         
         mLoginManager = [[FBSDKLoginManager alloc] init];
-        mViewController = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
-        
-        FBSDKAccessToken * token2 = [FBSDKAccessToken currentAccessToken];
+        mViewController = [[[UIApplication sharedApplication] keyWindow]rootViewController];
     }
     
     static void loginWithReadPermissions(value permissions){

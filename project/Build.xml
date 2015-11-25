@@ -4,11 +4,11 @@
 	
 	<files id="iphone">
 		<compilerflag value="-Iinclude"/>
-		<compilerflag value="-F../dependencies/ios/" />
+		<compilerflag value="-F../dependencies/ios/" />
 		
         <file name="src/LoginWrapper.mm" />
 		<file name="src/AccessTokenWrapper.mm" />
-        <file name="src/NMEAppDelegate+ExtensionFacebook.mm" />
+        <file name="src/SDLUIKitDelegate+ExtensionFacebook.mm" />
 		<file name="src/ExtensionFacebook.mm" />
 	</files>
 	
@@ -26,6 +26,7 @@
 		<section if="iphone" >
 			<vflag name="-framework" value="FBSDKCoreKit.framework" />
             <vflag name="-framework" value="FBSDKLoginKit.framework" />
+            
             <files id="iphone" if="iphone" />
         </section>
 		

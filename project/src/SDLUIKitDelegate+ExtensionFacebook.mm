@@ -1,12 +1,14 @@
-#include "NMEAppDelegate+ExtensionFacebook.h"
+#include "SDLUIKitDelegate+ExtensionFacebook.h"
 
 #import <objc/runtime.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-@implementation NMEAppDelegate (ExtensionFacebook)
+@implementation SDLUIKitDelegate (ExtensionFacebook)
 
 -(id)init {
     self = [super init];
+    
+    NSLog(@"init category");
     
     //didBecomeActive
     [[NSNotificationCenter defaultCenter] addObserver:self
