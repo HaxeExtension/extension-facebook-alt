@@ -8,8 +8,6 @@
 -(id)init {
     self = [super init];
     
-    NSLog(@"init category");
-    
     //didBecomeActive
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onApplicationDidBecomeActive:)
