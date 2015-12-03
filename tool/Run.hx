@@ -2,8 +2,10 @@ package ;
 import haxe.Template;
 import haxe.xml.Fast;
 import sys.FileSystem;
+
 import sys.io.File;
 import sys.io.FileOutput;
+import sys.io.Process;
 
 class Run {
 	
@@ -92,14 +94,17 @@ class Run {
 		var xml = Xml.parse(plistContent);
 		var dict : Xml = xml.firstElement().firstElement();
 		
+		var usedSDK : Float = getIOSSDKVersion();
+		trace("iphoneos sdk version : " + usedSDK);
+		
 		var facebookChild = "<key>CFBundleURLTypes</key>" +
 							"<array>" +
-							"<dict>" +
-							"<key>CFBundleURLSchemes</key>" +
-							"<array>" +
-							"<string>fb::fbid::</string>" +
-							"</array>" +
-							"</dict>" +
+								"<dict>" +
+									"<key>CFBundleURLSchemes</key>" +
+									"<array>" +
+										"<string>fb::fbid::</string>" +
+									"</array>" +
+								"</dict>" +
 							"</array>" +
 							"<key>FacebookAppID</key>" + 
 							"<string>::fbid::</string>" +
@@ -107,9 +112,54 @@ class Run {
 							"<string>::appname::</string>" + 
 							"<key>LSApplicationQueriesSchemes</key>" +
 							"<array>" +
-							"<string>fbauth2</string>" +
+								"<string>fbapi</string>" +
+								"<string>fbapi20130214</string>"+
+								"<string>fbapi20130702</string>"+
+								"<string>fbapi20131010</string>"+
+								"<string>fbapi20130410</string>"+
+								"<string>fbapi20131219</string>"+    
+								"<string>fbapi20140410</string>"+
+								"<string>fbapi20140116</string>"+
+								"<string>fbapi20150313</string>"+
+								"<string>fbapi20150629</string>"+
+								"<string>fbauth</string>" +
+								"<string>fbauth2</string>" +
+								"<string>fb-messenger-api</string>" +
+								"<string>fbshareextension</string>" +
 							"</array>";
 							
+		var appTransportSecurity =	"<key>NSAppTransportSecurity</key>"+
+									"<dict>"+
+										"<key>NSExceptionDomains</key>"+
+										"<dict>"+
+											"<key>facebook.com</key>"+
+											"<dict>"+
+												"<key>NSIncludesSubdomains</key>"+
+												"<true/>"+     
+												"<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>" +
+												"<false/>"+
+											"</dict>"+
+											"<key>fbcdn.net</key>"+
+											"<dict>"+
+												"<key>NSIncludesSubdomains</key>"+
+												"<true/>"+
+												"<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>" +
+												"<false/>"+
+											"</dict>"+
+											"<key>akamaihd.net</key>"+
+											"<dict>"+
+												"<key>NSIncludesSubdomains</key>" +
+												"<true/>"+
+												"<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>" +
+												"<false/>"+
+											"</dict>"+
+										"</dict>"+
+									"</dict>";
+									
+		
+		if (usedSDK >= 9.0)
+			facebookChild += appTransportSecurity;
+														
 		var params = { fbid : appID, appname : appDisplayName };
 		var tpl = new Template(facebookChild);
 		facebookChild = tpl.execute(params);
@@ -121,6 +171,12 @@ class Run {
 		var file : FileOutput = File.write(plistPath);
 		file.writeString(dict.toString());
 		file.close();
+	}
+	
+	static function getIOSSDKVersion() : Float {
+		var proc : Process = new Process("xcrun", ["--sdk", "iphoneos", "--show-sdk-version"]);
+		var rep = Std.parseFloat(proc.stdout.readAll().toString());
+		return rep;
 	}
 	
 }
