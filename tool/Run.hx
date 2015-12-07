@@ -40,21 +40,9 @@ class Run {
 			else if (node.att.name == "FACEBOOK_APP_DISPLAY_NAME")
 				appDisplayName = node.att.value;
 				
-		for (node in nodes.meta)
-			if (node.has.title){
-				title = node.att.title;
-				var titleParts : Array<String> = title.split(" ");
-				for (i in 0 ... titleParts.length) {
-					if (i == 0) continue;
-					
-					var firstLetter : String = titleParts[i].charAt(0);
-					firstLetter = firstLetter.toUpperCase();
-					
-					titleParts[i] = firstLetter + titleParts[i].substr(1, titleParts[i].length - 1);
-				}
-				title = "";
-				for (part in titleParts)
-					title += part;
+		for (node in nodes.app)
+			if (node.has.file){
+				title = node.att.file;
 				break;
 			}
 		
