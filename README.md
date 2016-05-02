@@ -41,24 +41,6 @@ Now you are ready to use the extension in your application.
 
 #### Android Specific step
 
-**/!\ There is probably a better way to do the following instruction :**
-
-Facebook java api requires at least java 1.7 to build.
-In the ```C:\Development\Android SDK\tools\ant\build.xml``` file, replace the lines
-```xml
-    <property name="java.target" value="1.5" />
-    <property name="java.source" value="1.5" />
-```
-by
-```xml
-    <property name="java.target" value="1.7" />
-    <property name="java.source" value="1.7" />
-```
-
-You may need to update your Java JDK http://www.oracle.com/technetwork/java/javase/downloads/index.html and use "openfl setup android" to set the path to the new JDK.
-
-**Please tell me if you know a better way to tell android to build with java 1.7 version**
-
 ##### Key Hashes
 
 Facebook asks for a key hashe when configuring your app for facebook.
@@ -67,20 +49,67 @@ Then use the bat in the sample folder to get your keyhase.
 
 #### iOs Specific step
 
-You need to add some informations in your project-info.plist to make facebook work with your ios app.
-Sadly they get erased everytime you use
-```shell
-lime update ios
-```
-or do a clean build.
+Add these lines in your PROJ-Info.plist template, before the final closing `</dict>`:
 
-To make this step easyer I made a simple command to add those informations.
-Use 
-```shell
-haxelib run facebook project.xml
+```xml
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb::ENV_FACEBOOK_APP_ID::</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>::ENV_FACEBOOK_APP_ID::</string>
+    <key>FacebookDisplayName</key>
+    <string>::ENV_FACEBOOK_DISPLAY_NAME::</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>facebook.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                <false/>
+            </dict>
+            <key>fbcdn.net</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                <false/>
+            </dict>
+            <key>akamaihd.net</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                <false/>
+            </dict>
+        </dict>
+    </dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
 ```
 
-After any update or clean build command to add the requiered informations in the plist.
+If you don't have an PROJ-Info.plist yet, you can find the default template here:
+
+https://github.com/openfl/lime/blob/master/templates/iphone/PROJ/PROJ-Info.plist
+
+To use it, save it at `templates/iphone/PROJ/PROJ-Info.plist`, and add this line in your project.xml:
+
+```
+<template path="templates" />
+```
 
 ## Basic Sample
 
