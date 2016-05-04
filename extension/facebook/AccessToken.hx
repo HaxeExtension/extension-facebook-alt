@@ -68,7 +68,7 @@ class AccessToken
 		if (mToken == null)
 			return [];
 			
-		var permissions : String;
+		var permissions : String = null;
 		
 		#if android
 		permissions = jni_getPermissions(mToken);
@@ -86,7 +86,7 @@ class AccessToken
 		if (mToken == null)
 			return [];
 			
-		var permissions : String;
+		var permissions : String = null;
 		
 		#if android
 		permissions = jni_getDeclinedPermissions(mToken);
