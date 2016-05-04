@@ -111,6 +111,17 @@ To use it, save it at `templates/iphone/PROJ/PROJ-Info.plist`, and add this line
 <template path="templates" />
 ```
 
+If you use other extennsions that templates that file, you'll have to merge it in yours.
+
+You can as well use the command
+
+```
+haxelib run facebook project.xml
+```
+
+To apply the change to ther plist file, but you'll need to run it after every lime update or clean build.
+
+
 ## Basic Sample
 
 ### Facebook Login
