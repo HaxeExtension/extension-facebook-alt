@@ -3,7 +3,7 @@ OpenFL extension to use Facebook in your app
 
 **/!\ Android only compatible with legacy build at the moment!**
 
-If you use ios-legacy backend, use the legacy branch.
+If you use ios-legacy backend (-Dlegacy), use the legacy branch.
 
 ## Instalation
 
