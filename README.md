@@ -243,7 +243,7 @@ Use this tool to test graph request : https://developers.facebook.com/tools/expl
   }
   
   function onError(){
-    trace("Shit happens");
+    trace("Problems!");
   }
 
 ```
