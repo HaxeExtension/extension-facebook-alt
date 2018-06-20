@@ -1,7 +1,11 @@
 package extension.facebook;
 
 #if (android && openfl)
-import openfl.utils.JNI;
+	#if (openfl < "4.0.0")
+	import openfl.utils.JNI;
+	#else
+	import lime.system.JNI;
+	#end
 #end
 
 /**
