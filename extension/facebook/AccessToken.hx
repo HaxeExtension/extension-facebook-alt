@@ -1,5 +1,9 @@
 package extension.facebook;
+#if (openfl < "4.0.0")
 import openfl.utils.JNI;
+#else
+import lime.system.JNI;
+#end
 
 #if cpp
 import cpp.Lib;
