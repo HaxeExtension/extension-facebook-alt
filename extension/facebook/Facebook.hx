@@ -7,7 +7,11 @@ import neko.Lib;
 #end
 
 #if (android && openfl)
+#if (openfl < "4.0.0")
 import openfl.utils.JNI;
+#else
+import lime.system.JNI;
+#end
 #end
 
 
